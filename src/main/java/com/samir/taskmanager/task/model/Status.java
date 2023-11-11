@@ -1,9 +1,7 @@
 package com.samir.taskmanager.task.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import java.util.Arrays;
 
 public enum Status {
     COMPLETED("Completed"),
