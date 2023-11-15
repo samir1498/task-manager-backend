@@ -30,3 +30,4 @@ build/
 # Ignore application configuration
 /application.yml
 /application.properties
+/src/main/resources/application.yml
