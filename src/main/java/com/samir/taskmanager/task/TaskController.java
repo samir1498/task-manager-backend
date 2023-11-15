@@ -1,24 +1,31 @@
-package com.samir.taskmanager.task.web;
+package com.samir.taskmanager.task;
 
 import com.samir.taskmanager.task.model.Task;
-import com.samir.taskmanager.task.service.TaskService;
+import com.samir.taskmanager.task.dto.TaskDTO;
+import com.samir.taskmanager.task.dto.TasksListDTO;
+import com.samir.taskmanager.util.DtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin("http://localhost:5173/tasks")
 @RequestMapping("api/v1/tasks")
 @RequiredArgsConstructor
 public class TaskController {
 
     private final TaskService taskService;
-    // get tasks
+    private final DtoMapper dtoMapper;
+
     @GetMapping
-    public ResponseEntity<List<Task>> getTasks(){
-        return new ResponseEntity<>(taskService.getTasks(), HttpStatus.OK);
+    public ResponseEntity<List<TaskDTO>> getTasks() {
+        List<Task> tasks = taskService.getTasksByUsername(getAuthenticatedUsername());
+        TasksListDTO tasksListDTO = dtoMapper.mapTasksToTasksListDTO(tasks);
+        return new ResponseEntity<>(tasksListDTO.getTasks(), HttpStatus.OK);
     }
     // get one task
     @GetMapping("{taskId}")
@@ -28,7 +35,7 @@ public class TaskController {
 
     @PostMapping
     public ResponseEntity<String> addNewTask(@RequestBody Task task) {
-        taskService.addNewTask(task);
+        taskService.addNewTask(task, getAuthenticatedUsername());
         return ResponseEntity.ok("Task added successfully");
     }
 
@@ -49,5 +56,8 @@ public class TaskController {
     public ResponseEntity<String> deleteTask(@PathVariable("taskId") Long id){
         taskService.deleteTask(id);
         return ResponseEntity.ok("Task was deleted successfully");
+    }
+    public String getAuthenticatedUsername() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 }

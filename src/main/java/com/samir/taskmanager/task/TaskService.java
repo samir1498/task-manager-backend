@@ -1,24 +1,28 @@
-package com.samir.taskmanager.task.service;
+package com.samir.taskmanager.task;
 
 import com.samir.taskmanager.task.model.Priority;
 import com.samir.taskmanager.task.model.Status;
 import com.samir.taskmanager.task.model.Task;
-import com.samir.taskmanager.task.repository.TaskRepository;
+import com.samir.taskmanager.task.TaskRepository;
+import com.samir.taskmanager.user.UserRepository;
+import com.samir.taskmanager.user.model.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class TaskService {
 
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
 
-    public List<Task> getTasks(){
-        return taskRepository.findAll();
+    public List<Task> getTasksByUsername(String username) {
+        return taskRepository.findByUserUsername(username);
     }
 
     public Task getTaskById(Long id){
@@ -28,8 +32,13 @@ public class TaskService {
                 + id + " does not exists"));
     }
 
-    public void addNewTask(Task task) {
-        taskRepository.save(task);
+    public void addNewTask(Task task, String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            task.setUser(user);
+            taskRepository.save(task);
+        }
     }
 
     public void deleteTask(Long id) {

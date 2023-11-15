@@ -1,8 +1,12 @@
 package com.samir.taskmanager.task.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.samir.taskmanager.user.model.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
@@ -32,6 +36,12 @@ public class Task {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @ToString.Exclude
+    private User user;
 
     public Task(String title, String description, LocalDate dueDate, Priority priority, Status status) {
         this.title = title;
