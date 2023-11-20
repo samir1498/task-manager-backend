@@ -59,14 +59,10 @@ public class AuthController {
                                         HttpServletResponse response) {
         System.out.println("Received signup request: " + signupDTO);
 
-        UserDetails userDetails = userService.loadUserByUsername(signupDTO.getUsername());
-        if(userDetails == null){
-            return ResponseEntity.badRequest().body("Username not available");
-        } else{
-            authService.addUser(signupDTO);
+        authService.addUser(signupDTO);
 
-            return ResponseEntity.ok("Signup success");
-        }
+        return ResponseEntity.ok("Signup success");
+
 
     }
 
