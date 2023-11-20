@@ -1,4 +1,4 @@
-package com.samir.taskmanager.Config;
+package com.samir.taskmanager.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

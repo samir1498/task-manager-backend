@@ -35,6 +35,7 @@ public class TaskController {
 
     @PostMapping
     public ResponseEntity<String> addNewTask(@RequestBody Task task) {
+        System.out.println(task);
         taskService.addNewTask(task, getAuthenticatedUsername());
         return ResponseEntity.ok("Task added successfully");
     }

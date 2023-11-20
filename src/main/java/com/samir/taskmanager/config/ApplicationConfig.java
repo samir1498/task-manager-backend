@@ -1,4 +1,4 @@
-package com.samir.taskmanager.Config;
+package com.samir.taskmanager.config;
 
 import com.samir.taskmanager.task.model.Priority;
 import com.samir.taskmanager.task.model.Status;
@@ -43,19 +43,15 @@ public class ApplicationConfig {
                     Priority.Low,
                     Status.IN_PROGRESS
             );
-            User samir = new User(
-                "samir",
-                "samir@gmail.com",
-                encoder.encode("samir"),
-                    Role.USER
+            User samir = new User();
+            samir.setUsername("samir");
+            samir.setPassword(encoder.encode("samir"));
+            samir.setRole(Role.USER);
 
-        );
-            User mounir = new User(
-                    "mounir",
-                    "mounir@gmail.com",
-                    encoder.encode("mounir"),
-                    Role.USER
-            );
+            User mounir = new User();
+            mounir.setUsername("mounir");
+            mounir.setPassword(encoder.encode("mounir"));
+            mounir.setRole(Role.USER);
             // Save users first
             // Set tasks to users and users to tasks
             task1.setUser(samir);

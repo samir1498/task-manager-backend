@@ -1,6 +1,7 @@
 package com.samir.taskmanager.auth;
 
 
+import com.samir.taskmanager.user.UserService;
 import com.samir.taskmanager.user.model.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,11 +25,12 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final HttpSessionSecurityContextRepository httpSessionSecurityContextRepository;
 
+    private final AuthService authService;
+
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginDTO loginDTO,
                                               HttpServletRequest request,
                                               HttpServletResponse response) {
-        System.out.println(loginDTO);
         try {
             UsernamePasswordAuthenticationToken authenticationRequest =
                     new UsernamePasswordAuthenticationToken(
@@ -49,6 +51,21 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<?> signupUser(@RequestBody SignupDTO signupDTO,
+                                        HttpServletRequest request,
+                                        HttpServletResponse response) {
+        // Implement your user registration logic here
+        // For simplicity, let's just print the received data
+        System.out.println("Received signup request: " + signupDTO);
+
+        // You may want to save the user to the database, perform validation, etc.
+        authService.addUser(signupDTO);
+
+        // Return a success response or handle registration failure
+        return ResponseEntity.ok("Signup success");
+    }
+
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
         try {
@@ -64,13 +81,4 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/check-login")
-    public ResponseEntity<?> checkLogin() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            return ResponseEntity.ok("User is logged in");
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not logged in");
-        }
-    }
 }

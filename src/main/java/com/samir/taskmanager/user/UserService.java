@@ -1,10 +1,14 @@
 package com.samir.taskmanager.user;
 
 
+import com.samir.taskmanager.auth.SignupDTO;
+import com.samir.taskmanager.user.model.Role;
+import com.samir.taskmanager.user.model.User;
 import lombok.Data;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,5 +24,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
     }
+
+
 
 }
