@@ -16,7 +16,11 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost:5173/tasks"));
+        config.setAllowedOrigins(Arrays.asList("http://localhost:5173",
+                "http://localhost:5173/tasks",
+                "https://tasks-manager-react.netlify.app/",
+                "https://tasks-manager-react.netlify.app/tasks"
+                    ));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         config.addAllowedHeader("*");
         source.registerCorsConfiguration("/**", config);
