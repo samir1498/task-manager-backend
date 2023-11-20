@@ -57,6 +57,7 @@ public class ApplicationSecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/v1/auth/**").permitAll()
+                                .requestMatchers("/**").permitAll()
                         .requestMatchers("/api/v1/tasks/**").hasRole(Role.USER.name())
                                 .anyRequest().authenticated()
                 )

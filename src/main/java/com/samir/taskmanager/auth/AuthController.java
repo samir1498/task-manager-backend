@@ -14,6 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +28,7 @@ public class AuthController {
     private final HttpSessionSecurityContextRepository httpSessionSecurityContextRepository;
 
     private final AuthService authService;
-
+    private final UserService userService;
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginDTO loginDTO,
                                               HttpServletRequest request,
@@ -55,15 +57,17 @@ public class AuthController {
     public ResponseEntity<?> signupUser(@RequestBody SignupDTO signupDTO,
                                         HttpServletRequest request,
                                         HttpServletResponse response) {
-        // Implement your user registration logic here
-        // For simplicity, let's just print the received data
         System.out.println("Received signup request: " + signupDTO);
 
-        // You may want to save the user to the database, perform validation, etc.
-        authService.addUser(signupDTO);
+        UserDetails userDetails = userService.loadUserByUsername(signupDTO.getUsername());
+        if(userDetails == null){
+            return ResponseEntity.badRequest().body("Username not available");
+        } else{
+            authService.addUser(signupDTO);
 
-        // Return a success response or handle registration failure
-        return ResponseEntity.ok("Signup success");
+            return ResponseEntity.ok("Signup success");
+        }
+
     }
 
     @PostMapping("/logout")

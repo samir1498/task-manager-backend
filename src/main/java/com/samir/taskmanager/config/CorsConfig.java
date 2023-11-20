@@ -16,8 +16,11 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("http://localhost:5173",
+        config.setAllowedOrigins(Arrays.asList(
+                "http://localhost:5173",
                 "http://localhost:5173/tasks",
+                "http://localhost:8080",
+                "http://localhost:8080/tasks",
                 "https://tasks-manager-react.netlify.app/",
                 "https://tasks-manager-react.netlify.app/tasks"
                     ));
